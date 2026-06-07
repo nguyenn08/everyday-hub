@@ -5,3 +5,4 @@ export * from "./comments";
 export * from "./saved_places";
 export * from "./reviews";
 export * from "./payment_methods";
+export * from "./users";
