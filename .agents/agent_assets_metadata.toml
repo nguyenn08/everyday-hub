@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Ql3sP86uLV7JDJt7sPzY2"
+uri = "file://attached_assets/street_festival.png"
+type = "image"
+title = "Local street festival and market"
+
+[[generated]]
+id = "byfhbb7QX5bLZ5HrWt8bn"
+uri = "file://attached_assets/local_sports.png"
+type = "image"
+title = "Local sports match under lights"
+
+[[generated]]
+id = "to98oCI_43s3RdQqrmEhS"
+uri = "file://attached_assets/nightlife_club.png"
+type = "image"
+title = "Vibrant nightlife club scene"
+
+[[generated]]
+id = "4gAQ9w9-SITssKOJ1hl-D"
+uri = "file://attached_assets/restaurant_food.png"
+type = "image"
+title = "Artisanal food dish at restaurant"
+
+[[generated]]
+id = "TVqEK-JAD9h4XDZlfFt_x"
+uri = "file://attached_assets/music_gig.png"
+type = "image"
+title = "Live music concert venue"

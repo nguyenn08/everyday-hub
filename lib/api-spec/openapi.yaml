@@ -3,13 +3,22 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: LocalScene API - local discovery and booking platform
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: posts
+    description: Discovery feed posts
+  - name: bookings
+    description: Reservations and bookings
+  - name: profile
+    description: User profile
+  - name: calendar
+    description: Calendar and schedule
+
 paths:
   /healthz:
     get:
@@ -24,6 +33,239 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /posts:
+    get:
+      operationId: listPosts
+      tags: [posts]
+      summary: List discovery posts
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+    post:
+      operationId: createPost
+      tags: [posts]
+      summary: Create a new post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "201":
+          description: Created post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+
+  /posts/trending:
+    get:
+      operationId: getTrendingPosts
+      tags: [posts]
+      summary: Get trending posts
+      responses:
+        "200":
+          description: Trending posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+  /posts/featured:
+    get:
+      operationId: getFeaturedPosts
+      tags: [posts]
+      summary: Get featured/editor picks
+      responses:
+        "200":
+          description: Featured posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+  /posts/{id}:
+    get:
+      operationId: getPost
+      tags: [posts]
+      summary: Get a single post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Not found
+
+  /posts/{id}/like:
+    patch:
+      operationId: togglePostLike
+      tags: [posts]
+      summary: Toggle like on a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+
+  /bookings:
+    get:
+      operationId: listBookings
+      tags: [bookings]
+      summary: List all bookings
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+    post:
+      operationId: createBooking
+      tags: [bookings]
+      summary: Create a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingInput"
+      responses:
+        "201":
+          description: Created booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /bookings/{id}:
+    delete:
+      operationId: cancelBooking
+      tags: [bookings]
+      summary: Cancel a booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cancelled booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+
+  /calendar/events:
+    get:
+      operationId: getCalendarEvents
+      tags: [calendar]
+      summary: Get calendar events for a date range
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [posts]
+      summary: Get dashboard stats summary
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +276,177 @@ components:
       required:
         - status
 
+    Post:
+      type: object
+      required: [id, title, category, authorName, authorAvatar, likes, commentsCount, createdAt, location, isBookable, liked]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: ["string", "null"]
+        category:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        authorName:
+          type: string
+        authorAvatar:
+          type: ["string", "null"]
+        likes:
+          type: integer
+        commentsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        location:
+          type: string
+        isBookable:
+          type: boolean
+        liked:
+          type: boolean
+        price:
+          type: ["number", "null"]
+        eventDate:
+          type: ["string", "null"]
+          format: date-time
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+
+    PostInput:
+      type: object
+      required: [title, category, location, isBookable]
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+        isBookable:
+          type: boolean
+        price:
+          type: number
+        eventDate:
+          type: string
+          format: date-time
+
+    Booking:
+      type: object
+      required: [id, postId, postTitle, location, eventDate, status, createdAt]
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        postTitle:
+          type: string
+        postImageUrl:
+          type: ["string", "null"]
+        location:
+          type: string
+        eventDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+        price:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        category:
+          type: string
+
+    BookingInput:
+      type: object
+      required: [postId]
+      properties:
+        postId:
+          type: integer
+
+    Profile:
+      type: object
+      required: [id, username, displayName, followersCount, followingCount, postsCount]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: ["string", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        coverUrl:
+          type: ["string", "null"]
+        followersCount:
+          type: integer
+        followingCount:
+          type: integer
+        postsCount:
+          type: integer
+        location:
+          type: ["string", "null"]
+
+    ProfileUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        coverUrl:
+          type: string
+        location:
+          type: string
+
+    CalendarEvent:
+      type: object
+      required: [id, title, date, type, location]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        date:
+          type: string
+          format: date-time
+        type:
+          type: string
+        location:
+          type: string
+        category:
+          type: string
+        bookingId:
+          type: ["integer", "null"]
+        price:
+          type: ["number", "null"]
+
+    Stats:
+      type: object
+      required: [totalPosts, upcomingBookings, totalBookings, categoryCounts]
+      properties:
+        totalPosts:
+          type: integer
+        upcomingBookings:
+          type: integer
+        totalBookings:
+          type: integer
+        categoryCounts:
+          type: object
+          additionalProperties:
+            type: integer
