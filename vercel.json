@@ -1,8 +1,4 @@
 {
   "buildCommand": "node artifacts/api-server/build-vercel.mjs",
-  "outputDirectory": "artifacts/localscene/dist/public",
-  "installCommand": "pnpm install --frozen-lockfile=false",
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ]
+  "installCommand": "pnpm install --frozen-lockfile=false"
 }

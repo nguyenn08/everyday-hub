@@ -3,13 +3,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import { execSync } from "node:child_process";
-import { mkdir, rm } from "node:fs/promises";
+import { mkdir, rm, cp, writeFile } from "node:fs/promises";
 
 globalThis.require = createRequire(import.meta.url);
 
 const apiServerDir = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(apiServerDir, "../..");
-const apiOutDir = path.resolve(rootDir, "api");
+const frontendDist = path.resolve(rootDir, "artifacts/localscene/dist/public");
+
+const outputDir = path.resolve(rootDir, ".vercel/output");
+const staticDir = path.resolve(outputDir, "static");
+const funcDir = path.resolve(outputDir, "functions/api/index.func");
 
 console.log("--- Building frontend (localscene) ---");
 execSync("pnpm --filter @workspace/localscene run build", {
@@ -18,18 +22,19 @@ execSync("pnpm --filter @workspace/localscene run build", {
   env: { ...process.env, PORT: "5173", BASE_PATH: "/" },
 });
 
-console.log("--- Bundling API handler for Vercel serverless ---");
-await rm(apiOutDir, { recursive: true, force: true });
-await mkdir(apiOutDir, { recursive: true });
+console.log("--- Assembling Build Output API v3 directory ---");
+await rm(outputDir, { recursive: true, force: true });
+await mkdir(staticDir, { recursive: true });
+await mkdir(funcDir, { recursive: true });
+await cp(frontendDist, staticDir, { recursive: true });
 
+console.log("--- Bundling API handler for Vercel serverless function ---");
 await esbuild({
   entryPoints: [path.resolve(apiServerDir, "src/handler.ts")],
   platform: "node",
   bundle: true,
   format: "esm",
-  outdir: apiOutDir,
-  outExtension: { ".js": ".mjs" },
-  entryNames: "[...path]",
+  outfile: path.resolve(funcDir, "index.mjs"),
   logLevel: "info",
   external: [
     "*.node",
@@ -60,5 +65,35 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
 `,
   },
 });
+
+await writeFile(
+  path.resolve(funcDir, ".vc-config.json"),
+  JSON.stringify(
+    {
+      runtime: "nodejs22.x",
+      handler: "index.mjs",
+      launcherType: "Nodejs",
+      shouldAddHelpers: true,
+    },
+    null,
+    2,
+  ),
+);
+
+await writeFile(
+  path.resolve(outputDir, "config.json"),
+  JSON.stringify(
+    {
+      version: 3,
+      routes: [
+        { src: "^/api(?:/.*)?$", dest: "/api/index" },
+        { handle: "filesystem" },
+        { src: "/(.*)", dest: "/index.html" },
+      ],
+    },
+    null,
+    2,
+  ),
+);
 
 console.log("--- Done ---");
