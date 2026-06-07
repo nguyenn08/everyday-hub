@@ -10,13 +10,28 @@ import {
 
 const router = Router();
 
+
+const CATEGORY_IMAGES: Record<string, string> = {
+  Food: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop&auto=format",
+  Barbershop: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&h=600&fit=crop&auto=format",
+  Beauty: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop&auto=format",
+  Wellness: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&h=600&fit=crop&auto=format",
+  Fitness: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&h=600&fit=crop&auto=format",
+  Nightlife: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&h=600&fit=crop&auto=format",
+  Sports: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&h=600&fit=crop&auto=format",
+  Arts: "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=800&h=600&fit=crop&auto=format",
+  Music: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop&auto=format",
+  Events: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=600&fit=crop&auto=format",
+  News: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=600&fit=crop&auto=format",
+};
+
 function formatPost(p: typeof postsTable.$inferSelect) {
   return {
     id: p.id,
     title: p.title,
     body: p.body,
     category: p.category,
-    imageUrl: p.imageUrl,
+    imageUrl: (p.imageUrl && !p.imageUrl.includes('picsum.photos')) ? p.imageUrl : (CATEGORY_IMAGES[p.category] ?? null),
     authorName: p.authorName,
     authorAvatar: p.authorAvatar,
     likes: p.likes,
