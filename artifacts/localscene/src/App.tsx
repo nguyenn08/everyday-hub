@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -8,6 +9,8 @@ import Home from "@/pages/Home";
 import Bookings from "@/pages/Bookings";
 import CalendarPage from "@/pages/Calendar";
 import Profile from "@/pages/Profile";
+import { AuthProvider } from "@/context/AuthContext";
+import { AuthModal } from "@/components/AuthModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,13 +36,18 @@ function Router() {
 }
 
 function App() {
+  const [authOpen, setAuthOpen] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <AuthProvider onOpenAuthModal={() => setAuthOpen(true)}>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
+          <Toaster />
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
