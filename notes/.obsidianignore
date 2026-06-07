@@ -1,0 +1,7 @@
+node_modules
+dist
+.pnpm-store
+pnpm-lock.yaml
+.git
+.local
+attached_assets
