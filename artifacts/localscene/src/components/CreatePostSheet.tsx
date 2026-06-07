@@ -19,7 +19,7 @@ export function CreatePostSheet({ children }: { children: React.ReactNode }) {
   const [formData, setFormData] = useState({
     title: "",
     body: "",
-    category: "Events",
+    category: "Barbershop",
     location: "",
     isBookable: false,
     price: "",
@@ -49,7 +49,7 @@ export function CreatePostSheet({ children }: { children: React.ReactNode }) {
           setFormData({
             title: "",
             body: "",
-            category: "Events",
+            category: "Barbershop",
             location: "",
             isBookable: false,
             price: "",
@@ -94,13 +94,17 @@ export function CreatePostSheet({ children }: { children: React.ReactNode }) {
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             >
+              <option value="Barbershop">Barbershop</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Wellness">Wellness</option>
+              <option value="Fitness">Fitness</option>
               <option value="Events">Events</option>
-              <option value="Sports">Sports</option>
-              <option value="News">News</option>
               <option value="Nightlife">Nightlife</option>
               <option value="Food">Food</option>
+              <option value="Sports">Sports</option>
               <option value="Arts">Arts</option>
               <option value="Music">Music</option>
+              <option value="News">News</option>
             </select>
           </div>
 
@@ -152,7 +156,7 @@ export function CreatePostSheet({ children }: { children: React.ReactNode }) {
 
           <div className="pt-4 pb-8">
             <Button type="submit" className="w-full font-bold h-12 rounded-xl text-base" disabled={createPost.isPending}>
-              {createPost.isPending ? "Posting..." : "Post to LocalScene"}
+              {createPost.isPending ? "Posting..." : "Post to Everything Hub"}
             </Button>
           </div>
         </form>

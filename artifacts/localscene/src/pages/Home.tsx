@@ -5,13 +5,13 @@ import {
   useGetTrendingPosts, 
   useGetFeaturedPosts 
 } from "@workspace/api-client-react";
-import { Input } from "@/components/ui/input";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { PostCard } from "@/components/PostCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { EHLogo } from "@/components/EHLogo";
 
-const CATEGORIES = ["All", "Sports", "News", "Events", "Nightlife", "Food", "Arts", "Music"];
+const CATEGORIES = ["All", "Barbershop", "Beauty", "Wellness", "Fitness", "Events", "Nightlife", "Food", "Sports", "Arts", "Music", "News"];
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -29,7 +29,10 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border pt-4 pb-2 px-4 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-black tracking-tight text-primary">LocalScene</h1>
+          <div className="flex items-center gap-2">
+            <EHLogo size={36} />
+            <span className="text-2xl font-black tracking-tight text-primary">Everything Hub</span>
+          </div>
           <div className="bg-muted w-9 h-9 rounded-full flex items-center justify-center cursor-pointer hover:bg-muted/80 transition-colors">
             <Search className="w-5 h-5 text-foreground" />
           </div>
