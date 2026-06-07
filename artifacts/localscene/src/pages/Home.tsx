@@ -28,7 +28,7 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border pt-4 pb-2 px-4 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <img src="/logo.png" alt="everyday HUB" className="h-10 object-contain" />
+          <img src="/logo.png" alt="everyday HUB" className="h-14 object-contain" />
           <div className="bg-muted w-9 h-9 rounded-full flex items-center justify-center cursor-pointer hover:bg-muted/80 transition-colors">
             <Search className="w-5 h-5 text-foreground" />
           </div>
