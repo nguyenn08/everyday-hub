@@ -26,12 +26,16 @@ export interface Post {
   location: string;
   isBookable: boolean;
   liked: boolean;
+  saved?: boolean;
   /** @nullable */
   price?: number | null;
   /** @nullable */
   eventDate?: string | null;
   isFeatured?: boolean;
   isTrending?: boolean;
+  /** @nullable */
+  avgRating?: number | null;
+  reviewsCount?: number;
 }
 
 export interface PostInput {
@@ -116,6 +120,60 @@ export interface CommentInput {
   authorName?: string;
 }
 
+export interface Review {
+  id: number;
+  postId: number;
+  authorName: string;
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating: number;
+  body: string;
+  createdAt: string;
+}
+
+export interface ReviewInput {
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating: number;
+  body: string;
+  authorName?: string;
+}
+
+export interface SavedPlace {
+  id: number;
+  postId: number;
+  createdAt: string;
+  post: Post;
+}
+
+export interface SavePlaceInput {
+  postId: number;
+}
+
+export interface PaymentMethod {
+  id: number;
+  /** @nullable */
+  cardLabel?: string | null;
+  cardLast4: string;
+  cardBrand: string;
+  expiryMonth: number;
+  expiryYear: number;
+  isDefault: boolean;
+  createdAt: string;
+}
+
+export interface PaymentMethodInput {
+  cardLabel?: string;
+  cardLast4: string;
+  cardBrand: string;
+  expiryMonth: number;
+  expiryYear: number;
+}
+
 export type StatsCategoryCounts = {[key: string]: number};
 
 export interface Stats {
@@ -128,6 +186,14 @@ export interface Stats {
 export type ListPostsParams = {
 category?: string;
 limit?: number;
+};
+
+export type UnsavePlace200 = {
+  ok?: boolean;
+};
+
+export type DeletePaymentMethod200 = {
+  ok?: boolean;
 };
 
 export type GetCalendarEventsParams = {

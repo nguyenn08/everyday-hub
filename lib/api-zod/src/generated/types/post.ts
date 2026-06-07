@@ -23,10 +23,14 @@ export interface Post {
   location: string;
   isBookable: boolean;
   liked: boolean;
+  saved?: boolean;
   /** @nullable */
   price?: number | null;
   /** @nullable */
   eventDate?: Date | null;
   isFeatured?: boolean;
   isTrending?: boolean;
+  /** @nullable */
+  avgRating?: number | null;
+  reviewsCount?: number;
 }

@@ -41,10 +41,13 @@ export const ListPostsResponseItem = zod.object({
   "location": zod.string(),
   "isBookable": zod.boolean(),
   "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
   "price": zod.number().nullish(),
   "eventDate": zod.coerce.date().nullish(),
   "isFeatured": zod.boolean().optional(),
-  "isTrending": zod.boolean().optional()
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
 })
 export const ListPostsResponse = zod.array(ListPostsResponseItem)
 
@@ -81,10 +84,13 @@ export const GetTrendingPostsResponseItem = zod.object({
   "location": zod.string(),
   "isBookable": zod.boolean(),
   "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
   "price": zod.number().nullish(),
   "eventDate": zod.coerce.date().nullish(),
   "isFeatured": zod.boolean().optional(),
-  "isTrending": zod.boolean().optional()
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
 })
 export const GetTrendingPostsResponse = zod.array(GetTrendingPostsResponseItem)
 
@@ -106,10 +112,13 @@ export const GetFeaturedPostsResponseItem = zod.object({
   "location": zod.string(),
   "isBookable": zod.boolean(),
   "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
   "price": zod.number().nullish(),
   "eventDate": zod.coerce.date().nullish(),
   "isFeatured": zod.boolean().optional(),
-  "isTrending": zod.boolean().optional()
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
 })
 export const GetFeaturedPostsResponse = zod.array(GetFeaturedPostsResponseItem)
 
@@ -135,10 +144,13 @@ export const GetPostResponse = zod.object({
   "location": zod.string(),
   "isBookable": zod.boolean(),
   "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
   "price": zod.number().nullish(),
   "eventDate": zod.coerce.date().nullish(),
   "isFeatured": zod.boolean().optional(),
-  "isTrending": zod.boolean().optional()
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
 })
 
 
@@ -163,10 +175,13 @@ export const TogglePostLikeResponse = zod.object({
   "location": zod.string(),
   "isBookable": zod.boolean(),
   "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
   "price": zod.number().nullish(),
   "eventDate": zod.coerce.date().nullish(),
   "isFeatured": zod.boolean().optional(),
-  "isTrending": zod.boolean().optional()
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
 })
 
 
@@ -195,6 +210,46 @@ export const CreateCommentParams = zod.object({
 })
 
 export const CreateCommentBody = zod.object({
+  "body": zod.string(),
+  "authorName": zod.string().optional()
+})
+
+
+/**
+ * @summary List reviews for a post
+ */
+export const ListReviewsParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const listReviewsResponseRatingMax = 5;
+
+
+
+export const ListReviewsResponseItem = zod.object({
+  "id": zod.number(),
+  "postId": zod.number(),
+  "authorName": zod.string(),
+  "rating": zod.number().min(1).max(listReviewsResponseRatingMax),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const ListReviewsResponse = zod.array(ListReviewsResponseItem)
+
+
+/**
+ * @summary Create a review for a post
+ */
+export const CreateReviewParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const createReviewBodyRatingMax = 5;
+
+
+
+export const CreateReviewBody = zod.object({
+  "rating": zod.number().min(1).max(createReviewBodyRatingMax),
   "body": zod.string(),
   "authorName": zod.string().optional()
 })
@@ -244,6 +299,118 @@ export const CancelBookingResponse = zod.object({
   "price": zod.number().nullish(),
   "createdAt": zod.coerce.date(),
   "category": zod.string().optional()
+})
+
+
+/**
+ * @summary List saved places
+ */
+export const ListSavedPlacesResponseItem = zod.object({
+  "id": zod.number(),
+  "postId": zod.number(),
+  "createdAt": zod.coerce.date(),
+  "post": zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "body": zod.string().nullish(),
+  "category": zod.string(),
+  "imageUrl": zod.string().nullish(),
+  "authorName": zod.string(),
+  "authorAvatar": zod.string().nullable(),
+  "likes": zod.number(),
+  "commentsCount": zod.number(),
+  "createdAt": zod.coerce.date(),
+  "location": zod.string(),
+  "isBookable": zod.boolean(),
+  "liked": zod.boolean(),
+  "saved": zod.boolean().optional(),
+  "price": zod.number().nullish(),
+  "eventDate": zod.coerce.date().nullish(),
+  "isFeatured": zod.boolean().optional(),
+  "isTrending": zod.boolean().optional(),
+  "avgRating": zod.number().nullish(),
+  "reviewsCount": zod.number().optional()
+})
+})
+export const ListSavedPlacesResponse = zod.array(ListSavedPlacesResponseItem)
+
+
+/**
+ * @summary Save a place
+ */
+export const SavePlaceBody = zod.object({
+  "postId": zod.number()
+})
+
+
+/**
+ * @summary Unsave a place
+ */
+export const UnsavePlaceParams = zod.object({
+  "postId": zod.coerce.number()
+})
+
+export const UnsavePlaceResponse = zod.object({
+  "ok": zod.boolean().optional()
+})
+
+
+/**
+ * @summary List saved payment methods
+ */
+export const ListPaymentMethodsResponseItem = zod.object({
+  "id": zod.number(),
+  "cardLabel": zod.string().nullish(),
+  "cardLast4": zod.string(),
+  "cardBrand": zod.string(),
+  "expiryMonth": zod.number(),
+  "expiryYear": zod.number(),
+  "isDefault": zod.boolean(),
+  "createdAt": zod.coerce.date()
+})
+export const ListPaymentMethodsResponse = zod.array(ListPaymentMethodsResponseItem)
+
+
+/**
+ * @summary Add a payment method
+ */
+export const AddPaymentMethodBody = zod.object({
+  "cardLabel": zod.string().optional(),
+  "cardLast4": zod.string(),
+  "cardBrand": zod.string(),
+  "expiryMonth": zod.number(),
+  "expiryYear": zod.number()
+})
+
+
+/**
+ * @summary Delete a payment method
+ */
+export const DeletePaymentMethodParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeletePaymentMethodResponse = zod.object({
+  "ok": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Set a payment method as default
+ */
+export const SetDefaultPaymentMethodParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SetDefaultPaymentMethodResponse = zod.object({
+  "id": zod.number(),
+  "cardLabel": zod.string().nullish(),
+  "cardLast4": zod.string(),
+  "cardBrand": zod.string(),
+  "expiryMonth": zod.number(),
+  "expiryYear": zod.number(),
+  "isDefault": zod.boolean(),
+  "createdAt": zod.coerce.date()
 })
 
 

@@ -18,6 +18,12 @@ tags:
     description: User profile
   - name: calendar
     description: Calendar and schedule
+  - name: saved
+    description: Saved places
+  - name: reviews
+    description: Reviews and ratings
+  - name: payments
+    description: Payment methods
 
 paths:
   /healthz:
@@ -190,6 +196,50 @@ paths:
               schema:
                 $ref: "#/components/schemas/Comment"
 
+  /posts/{id}/reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      summary: List reviews for a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Create a review for a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Created review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
   /bookings:
     get:
       operationId: listBookings
@@ -240,6 +290,133 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Booking"
+
+  /saved-places:
+    get:
+      operationId: listSavedPlaces
+      tags: [saved]
+      summary: List saved places
+      responses:
+        "200":
+          description: Saved places (full post objects)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SavedPlace"
+    post:
+      operationId: savePlace
+      tags: [saved]
+      summary: Save a place
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SavePlaceInput"
+      responses:
+        "201":
+          description: Saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedPlace"
+
+  /saved-places/{postId}:
+    delete:
+      operationId: unsavePlace
+      tags: [saved]
+      summary: Unsave a place
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+
+  /payment-methods:
+    get:
+      operationId: listPaymentMethods
+      tags: [payments]
+      summary: List saved payment methods
+      responses:
+        "200":
+          description: Payment methods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentMethod"
+    post:
+      operationId: addPaymentMethod
+      tags: [payments]
+      summary: Add a payment method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentMethodInput"
+      responses:
+        "201":
+          description: Added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethod"
+
+  /payment-methods/{id}:
+    delete:
+      operationId: deletePaymentMethod
+      tags: [payments]
+      summary: Delete a payment method
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+
+  /payment-methods/{id}/default:
+    patch:
+      operationId: setDefaultPaymentMethod
+      tags: [payments]
+      summary: Set a payment method as default
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethod"
 
   /profile:
     get:
@@ -351,6 +528,8 @@ components:
           type: boolean
         liked:
           type: boolean
+        saved:
+          type: boolean
         price:
           type: ["number", "null"]
         eventDate:
@@ -360,6 +539,10 @@ components:
           type: boolean
         isTrending:
           type: boolean
+        avgRating:
+          type: ["number", "null"]
+        reviewsCount:
+          type: integer
 
     PostInput:
       type: object
@@ -504,6 +687,97 @@ components:
           type: string
         authorName:
           type: string
+
+    Review:
+      type: object
+      required: [id, postId, authorName, rating, body, createdAt]
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        authorName:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ReviewInput:
+      type: object
+      required: [rating, body]
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        body:
+          type: string
+        authorName:
+          type: string
+
+    SavedPlace:
+      type: object
+      required: [id, postId, createdAt, post]
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        post:
+          $ref: "#/components/schemas/Post"
+
+    SavePlaceInput:
+      type: object
+      required: [postId]
+      properties:
+        postId:
+          type: integer
+
+    PaymentMethod:
+      type: object
+      required: [id, cardLast4, cardBrand, expiryMonth, expiryYear, isDefault, createdAt]
+      properties:
+        id:
+          type: integer
+        cardLabel:
+          type: ["string", "null"]
+        cardLast4:
+          type: string
+        cardBrand:
+          type: string
+        expiryMonth:
+          type: integer
+        expiryYear:
+          type: integer
+        isDefault:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    PaymentMethodInput:
+      type: object
+      required: [cardLast4, cardBrand, expiryMonth, expiryYear]
+      properties:
+        cardLabel:
+          type: string
+        cardLast4:
+          type: string
+        cardBrand:
+          type: string
+        expiryMonth:
+          type: integer
+        expiryYear:
+          type: integer
 
     Stats:
       type: object
