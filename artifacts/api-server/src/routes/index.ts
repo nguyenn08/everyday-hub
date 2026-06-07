@@ -5,11 +5,13 @@ import bookingsRouter from "./bookings";
 import profileRouter from "./profile";
 import calendarRouter from "./calendar";
 import statsRouter from "./stats";
+import commentsRouter from "./comments";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
 router.use(postsRouter);
+router.use(commentsRouter);
 router.use(bookingsRouter);
 router.use(profileRouter);
 router.use(calendarRouter);

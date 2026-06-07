@@ -103,6 +103,19 @@ export interface CalendarEvent {
   price?: number | null;
 }
 
+export interface Comment {
+  id: number;
+  postId: number;
+  authorName: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface CommentInput {
+  body: string;
+  authorName?: string;
+}
+
 export type StatsCategoryCounts = {[key: string]: number};
 
 export interface Stats {

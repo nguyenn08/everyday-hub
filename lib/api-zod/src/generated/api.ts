@@ -171,6 +171,36 @@ export const TogglePostLikeResponse = zod.object({
 
 
 /**
+ * @summary List comments for a post
+ */
+export const ListCommentsParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ListCommentsResponseItem = zod.object({
+  "id": zod.number(),
+  "postId": zod.number(),
+  "authorName": zod.string(),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const ListCommentsResponse = zod.array(ListCommentsResponseItem)
+
+
+/**
+ * @summary Add a comment to a post
+ */
+export const CreateCommentParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const CreateCommentBody = zod.object({
+  "body": zod.string(),
+  "authorName": zod.string().optional()
+})
+
+
+/**
  * @summary List all bookings
  */
 export const ListBookingsResponseItem = zod.object({

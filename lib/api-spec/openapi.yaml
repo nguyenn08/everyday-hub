@@ -146,6 +146,50 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
 
+  /posts/{id}/comments:
+    get:
+      operationId: listComments
+      tags: [posts]
+      summary: List comments for a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: createComment
+      tags: [posts]
+      summary: Add a comment to a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Created comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
   /bookings:
     get:
       operationId: listBookings
@@ -435,6 +479,31 @@ components:
           type: ["integer", "null"]
         price:
           type: ["number", "null"]
+
+    Comment:
+      type: object
+      required: [id, postId, authorName, body, createdAt]
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        authorName:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    CommentInput:
+      type: object
+      required: [body]
+      properties:
+        body:
+          type: string
+        authorName:
+          type: string
 
     Stats:
       type: object
