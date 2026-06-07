@@ -15,20 +15,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="flex flex-col min-h-[100dvh] bg-background w-full max-w-md mx-auto relative overflow-hidden shadow-2xl">
-      <main className="flex-1 overflow-y-auto pb-20 no-scrollbar relative">
+    <div className="flex flex-col h-[100dvh] bg-background w-full max-w-md mx-auto relative overflow-hidden shadow-2xl">
+      <main className="flex-1 overflow-y-auto no-scrollbar relative">
         {children}
       </main>
 
       {/* FAB for Creating Post */}
       <CreatePostSheet>
-        <button className="absolute bottom-20 right-4 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all z-40 border-2 border-background/50">
+        <button className="absolute bottom-[72px] right-4 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all z-40 border-2 border-background/50">
           <Plus className="w-6 h-6" strokeWidth={3} />
         </button>
       </CreatePostSheet>
 
       {/* Bottom Navigation */}
-      <nav className="absolute bottom-0 left-0 right-0 bg-background/90 backdrop-blur-xl border-t border-border px-6 pb-safe pt-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+      <nav className="flex-shrink-0 bg-background/90 backdrop-blur-xl border-t border-border px-6 pb-safe pt-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         <div className="flex justify-between items-center h-14">
           {navItems.map((item) => {
             const isActive = location === item.href;
