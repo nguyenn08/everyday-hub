@@ -37,6 +37,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+
+const CATEGORY_IMAGES: Record<string, string> = {
+  Food: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&auto=format",
+  Barbershop: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=400&fit=crop&auto=format",
+  Beauty: "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&h=400&fit=crop&auto=format",
+  Wellness: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&h=400&fit=crop&auto=format",
+  Fitness: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop&auto=format",
+  Events: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop&auto=format",
+  Nightlife: "https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?w=600&h=400&fit=crop&auto=format",
+  Sports: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=600&h=400&fit=crop&auto=format",
+  Arts: "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&h=400&fit=crop&auto=format",
+  Music: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format",
+  News: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&h=400&fit=crop&auto=format",
+};
+
 interface PostCardProps {
   post: Post;
   variant?: "feed" | "featured" | "compact";
@@ -289,7 +304,7 @@ function PostDetail({ postId, onBook, isBooking }: { postId: number; onBook: () 
           <div className="flex flex-col">
             <span className="font-bold text-sm leading-none">{post.authorName}</span>
             <span className="text-muted-foreground text-xs mt-1">
-              {format(parseISO(post.createdAt), "MMM d, yyyy")} · {post.category}
+              {format(parseISO(post.createdAt), "MMM d, yyyy")} Â· {post.category}
             </span>
           </div>
         </div>
@@ -305,13 +320,13 @@ function PostDetail({ postId, onBook, isBooking }: { postId: number; onBook: () 
           {post.eventDate && (
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-              <span className="font-medium">{format(parseISO(post.eventDate), "EEEE, MMMM d · h:mm a")}</span>
+              <span className="font-medium">{format(parseISO(post.eventDate), "EEEE, MMMM d Â· h:mm a")}</span>
             </div>
           )}
         </div>
         {post.isBookable && (
           <Button size="lg" className="w-full rounded-xl font-bold shadow-md" onClick={onBook} disabled={isBooking}>
-            {isBooking ? "Reserving..." : `Reserve Spot${post.price && post.price > 0 ? ` · $${post.price}` : post.price === 0 ? " · Free" : ""}`}
+            {isBooking ? "Reserving..." : `Reserve Spot${post.price && post.price > 0 ? ` Â· $${post.price}` : post.price === 0 ? " Â· Free" : ""}`}
           </Button>
         )}
       </div>
@@ -352,6 +367,7 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
   const [localLiked, setLocalLiked] = useState(post.liked);
   const [localLikes, setLocalLikes] = useState(post.likes);
   const [localSaved, setLocalSaved] = useState(post.saved ?? false);
+  const displayImage = post.imageUrl || CATEGORY_IMAGES[post.category];
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -405,13 +421,13 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const text = `${post.title} — ${post.location}`;
+    const text = `${post.title} â ${post.location}`;
     const url = window.location.href;
     if (navigator.share) {
       try {
         await navigator.share({ title: post.title, text, url });
       } catch {
-        // user cancelled — do nothing
+        // user cancelled â do nothing
       }
     } else {
       await navigator.clipboard.writeText(`${text}\n${url}`);
@@ -436,8 +452,8 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
 
   const featuredCard = (
     <div className="relative overflow-hidden rounded-2xl h-72 group">
-      {post.imageUrl ? (
-        <img src={post.imageUrl} alt={post.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      {displayImage ? (
+        <img src={displayImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-primary/10" />
       )}
@@ -469,7 +485,7 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
           <div className="flex flex-col">
             <span className="font-bold text-sm leading-none">{post.authorName}</span>
             <span className="text-muted-foreground text-[10px] mt-0.5 uppercase tracking-wide font-medium">
-              {format(parseISO(post.createdAt), "MMM d")} · {post.category}
+              {format(parseISO(post.createdAt), "MMM d")} Â· {post.category}
             </span>
           </div>
         </div>
@@ -492,9 +508,9 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
         {post.body && <p className="text-muted-foreground text-sm line-clamp-2 mt-1 leading-relaxed">{post.body}</p>}
       </div>
 
-      {post.imageUrl && (
+      {displayImage && (
         <div className="rounded-xl overflow-hidden max-h-60 bg-muted border border-border/40">
-          <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
+          <img src={displayImage} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
         </div>
       )}
 
@@ -537,7 +553,7 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
         </div>
         {post.isBookable && (
           <Button size="sm" className="rounded-full font-bold px-5 shadow-sm active:scale-95 transition-transform" onClick={handleBook} disabled={createBooking.isPending}>
-            {createBooking.isPending ? "Reserving..." : post.price && post.price > 0 ? `Reserve · $${post.price}` : "Reserve"}
+            {createBooking.isPending ? "Reserving..." : post.price && post.price > 0 ? `Reserve Â· $${post.price}` : "Reserve"}
           </Button>
         )}
       </div>
