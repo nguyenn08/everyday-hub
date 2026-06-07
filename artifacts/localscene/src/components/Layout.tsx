@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Calendar, Ticket, User, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CreatePostSheet } from "./CreatePostSheet";
+import { useListBookings } from "@workspace/api-client-react";
 
 function EHPinIcon({ className, active }: { className?: string; active?: boolean }) {
   return (
@@ -37,9 +38,11 @@ function EHPinIcon({ className, active }: { className?: string; active?: boolean
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const { data: bookings } = useListBookings();
+  const upcomingCount = bookings?.filter((b) => b.status === "confirmed").length ?? 0;
 
   const iconCls = (active: boolean) =>
-    cn("flex items-center justify-center p-1.5 rounded-full transition-all duration-300", active && "bg-primary/10");
+    cn("relative flex items-center justify-center p-1.5 rounded-full transition-all duration-300", active && "bg-primary/10");
 
   const linkCls = (active: boolean) =>
     cn(
@@ -83,10 +86,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="text-[10px] font-medium tracking-tight">Calendar</span>
           </Link>
 
-          {/* Bookings */}
+          {/* Bookings — with badge */}
           <Link href="/bookings" className={linkCls(isBookings)}>
             <div className={iconCls(isBookings)}>
               <Ticket className={cn("w-5 h-5 transition-transform", isBookings && "fill-primary/20 scale-110")} strokeWidth={isBookings ? 2.5 : 2} />
+              {upcomingCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-primary text-primary-foreground text-[9px] font-black rounded-full flex items-center justify-center px-1 leading-none">
+                  {upcomingCount > 9 ? "9+" : upcomingCount}
+                </span>
+              )}
             </div>
             <span className="text-[10px] font-medium tracking-tight">Bookings</span>
           </Link>

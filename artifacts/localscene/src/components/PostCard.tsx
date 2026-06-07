@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Heart, MessageCircle, MapPin, Calendar, Send, Bookmark, Star } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Calendar, Send, Bookmark, Star, Share2 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import {
   Post,
@@ -403,6 +403,22 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
     }
   };
 
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const text = `${post.title} — ${post.location}`;
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: post.title, text, url });
+      } catch {
+        // user cancelled — do nothing
+      }
+    } else {
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      toast({ title: "Copied to clipboard", description: "Link and details copied." });
+    }
+  };
+
   const handleBook = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     createBooking.mutate(
@@ -512,6 +528,11 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
               <MessageCircle className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
             </div>
             <span className="text-sm font-bold text-muted-foreground">{post.commentsCount}</span>
+          </button>
+          <button onClick={handleShare} className="group">
+            <div className="p-1.5 rounded-full group-hover:bg-muted transition-colors">
+              <Share2 className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            </div>
           </button>
         </div>
         {post.isBookable && (
