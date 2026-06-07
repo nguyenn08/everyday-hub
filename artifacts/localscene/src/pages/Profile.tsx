@@ -27,10 +27,10 @@ import { cn } from "@/lib/utils";
 
 const CARD_BRANDS = ["Visa", "Mastercard", "Amex", "Discover"];
 const CARD_BRAND_COLORS: Record<string, string> = {
-  Visa: "bg-blue-50 text-blue-700 border-blue-200",
-  Mastercard: "bg-red-50 text-red-700 border-red-200",
-  Amex: "bg-sky-50 text-sky-700 border-sky-200",
-  Discover: "bg-orange-50 text-orange-700 border-orange-200",
+  Visa: "bg-primary/15 text-primary border-primary/30",
+  Mastercard: "bg-primary/15 text-primary border-primary/30",
+  Amex: "bg-primary/15 text-primary border-primary/30",
+  Discover: "bg-primary/15 text-primary border-primary/30",
 };
 
 function PaymentMethodsSection() {

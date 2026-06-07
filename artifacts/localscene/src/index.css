@@ -66,76 +66,78 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE — everyday HUB navy theme */
+/* everyday HUB — dark navy theme matching the logo */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(255,255,255, .12);
+  --badge-outline: rgba(255,255,255, .06);
 
-  --opaque-button-border-intensity: -8;
+  --opaque-button-border-intensity: 9;
 
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
 
-  /* Cool white background with a subtle blue tint */
-  --background: 216 30% 97%;
-  --foreground: 222 55% 12%;
-  --border: 216 20% 88%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 55% 12%;
-  --card-border: 216 20% 88%;
-  --sidebar: 216 30% 97%;
-  --sidebar-foreground: 222 55% 12%;
-  --sidebar-border: 216 20% 88%;
+  /* App background = the logo's deep navy */
+  --background: 222 58% 13%;
+  --foreground: 210 40% 96%;
+  --border: 222 40% 24%;
 
-  /* Navy blue — the dominant logo color */
-  --primary: 222 62% 22%;
-  --primary-foreground: 0 0% 100%;
+  /* Cards slightly lighter than background */
+  --card: 222 52% 17%;
+  --card-foreground: 210 40% 96%;
+  --card-border: 222 40% 24%;
 
-  --sidebar-primary: 222 62% 22%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 216 25% 92%;
-  --sidebar-accent-foreground: 222 55% 12%;
-  --sidebar-ring: 222 62% 22%;
+  --sidebar: 222 58% 11%;
+  --sidebar-foreground: 210 40% 96%;
+  --sidebar-border: 222 40% 24%;
+  --sidebar-primary: 205 65% 68%;
+  --sidebar-primary-foreground: 222 62% 12%;
+  --sidebar-accent: 222 45% 21%;
+  --sidebar-accent-foreground: 210 40% 96%;
+  --sidebar-ring: 205 65% 68%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 55% 12%;
-  --popover-border: 216 20% 88%;
+  --popover: 222 52% 17%;
+  --popover-foreground: 210 40% 96%;
+  --popover-border: 222 40% 24%;
 
-  --secondary: 216 25% 92%;
-  --secondary-foreground: 222 55% 12%;
+  /* Primary = icy blue from "HUB" in the logo */
+  --primary: 205 65% 68%;
+  --primary-foreground: 222 62% 12%;
 
-  --muted: 216 25% 93%;
-  --muted-foreground: 220 15% 45%;
+  --secondary: 222 45% 21%;
+  --secondary-foreground: 210 40% 96%;
 
-  /* Light blue — the "HUB" accent color from the logo */
-  --accent: 210 55% 72%;
-  --accent-foreground: 222 62% 15%;
+  --muted: 222 45% 20%;
+  --muted-foreground: 215 25% 62%;
 
-  --destructive: 0 85% 58%;
+  /* Accent = same icy blue, slightly lighter */
+  --accent: 205 55% 58%;
+  --accent-foreground: 222 62% 12%;
+
+  --destructive: 0 70% 58%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 216 20% 88%;
-  --ring: 222 62% 22%;
+  --input: 222 40% 24%;
+  --ring: 205 65% 68%;
 
-  --chart-1: 222 62% 22%;
-  --chart-2: 210 55% 55%;
-  --chart-3: 180 55% 38%;
-  --chart-4: 265 60% 52%;
-  --chart-5: 338 68% 55%;
+  --chart-1: 205 65% 68%;
+  --chart-2: 190 55% 55%;
+  --chart-3: 165 55% 45%;
+  --chart-4: 265 55% 65%;
+  --chart-5: 338 65% 65%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: 1rem;
 
-  --shadow-2xs: 0px 2px 0px 0px hsl(222 62% 22% / 0.06);
-  --shadow-xs:  0px 2px 0px 0px hsl(222 62% 22% / 0.06);
-  --shadow-sm:  0px 2px 0px 0px hsl(222 62% 22% / 0.06), 0px 1px 2px -1px hsl(222 62% 22% / 0.06);
-  --shadow:     0px 2px 0px 0px hsl(222 62% 22% / 0.06), 0px 1px 2px -1px hsl(222 62% 22% / 0.06);
-  --shadow-md:  0px 2px 0px 0px hsl(222 62% 22% / 0.08), 0px 2px 4px -1px hsl(222 62% 22% / 0.08);
-  --shadow-lg:  0px 2px 0px 0px hsl(222 62% 22% / 0.08), 0px 4px 6px -1px hsl(222 62% 22% / 0.08);
-  --shadow-xl:  0px 2px 0px 0px hsl(222 62% 22% / 0.10), 0px 8px 10px -1px hsl(222 62% 22% / 0.10);
-  --shadow-2xl: 0px 2px 0px 0px hsl(222 62% 22% / 0.10);
+  --shadow-2xs: 0px 2px 4px 0px hsl(222 58% 8% / 0.5);
+  --shadow-xs:  0px 2px 4px 0px hsl(222 58% 8% / 0.5);
+  --shadow-sm:  0px 2px 4px 0px hsl(222 58% 8% / 0.5), 0px 1px 2px -1px hsl(222 58% 8% / 0.4);
+  --shadow:     0px 2px 4px 0px hsl(222 58% 8% / 0.5), 0px 1px 2px -1px hsl(222 58% 8% / 0.4);
+  --shadow-md:  0px 2px 6px 0px hsl(222 58% 8% / 0.5), 0px 2px 4px -1px hsl(222 58% 8% / 0.4);
+  --shadow-lg:  0px 2px 8px 0px hsl(222 58% 8% / 0.5), 0px 4px 6px -1px hsl(222 58% 8% / 0.4);
+  --shadow-xl:  0px 2px 10px 0px hsl(222 58% 8% / 0.5), 0px 8px 10px -1px hsl(222 58% 8% / 0.4);
+  --shadow-2xl: 0px 4px 16px 0px hsl(222 58% 8% / 0.6);
 
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
   --sidebar-accent-border:  hsl(from hsl(var(--sidebar-accent))  h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -146,65 +148,59 @@
   --destructive-border:hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
+/* Dark mode — even deeper navy */
 .dark {
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
-
   --opaque-button-border-intensity: 9;
-
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 222 40% 8%;
-  --foreground: 216 30% 95%;
-  --border: 222 30% 18%;
-  --card: 222 35% 11%;
-  --card-foreground: 216 30% 95%;
-  --card-border: 222 30% 18%;
-  --sidebar: 222 40% 9%;
-  --sidebar-foreground: 216 30% 95%;
-  --sidebar-border: 222 30% 18%;
-  --sidebar-primary: 222 55% 55%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 222 30% 18%;
-  --sidebar-accent-foreground: 216 30% 95%;
-  --sidebar-ring: 222 55% 55%;
-  --popover: 222 35% 11%;
-  --popover-foreground: 216 30% 95%;
-  --popover-border: 222 30% 18%;
+  --background: 222 62% 9%;
+  --foreground: 210 40% 96%;
+  --border: 222 45% 20%;
+  --card: 222 55% 13%;
+  --card-foreground: 210 40% 96%;
+  --card-border: 222 45% 20%;
+  --sidebar: 222 62% 8%;
+  --sidebar-foreground: 210 40% 96%;
+  --sidebar-border: 222 45% 20%;
+  --sidebar-primary: 205 65% 68%;
+  --sidebar-primary-foreground: 222 62% 10%;
+  --sidebar-accent: 222 45% 18%;
+  --sidebar-accent-foreground: 210 40% 96%;
+  --sidebar-ring: 205 65% 68%;
+  --popover: 222 55% 13%;
+  --popover-foreground: 210 40% 96%;
+  --popover-border: 222 45% 20%;
 
-  --primary: 222 55% 55%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 222 30% 18%;
-  --secondary-foreground: 216 30% 95%;
-
-  --muted: 222 30% 18%;
-  --muted-foreground: 218 15% 62%;
-
-  --accent: 210 55% 65%;
+  --primary: 205 65% 68%;
+  --primary-foreground: 222 62% 10%;
+  --secondary: 222 45% 18%;
+  --secondary-foreground: 210 40% 96%;
+  --muted: 222 45% 18%;
+  --muted-foreground: 215 25% 58%;
+  --accent: 205 55% 58%;
   --accent-foreground: 222 62% 10%;
-
-  --destructive: 0 75% 55%;
+  --destructive: 0 70% 55%;
   --destructive-foreground: 0 0% 100%;
+  --input: 222 45% 20%;
+  --ring: 205 65% 68%;
 
-  --input: 222 30% 18%;
-  --ring: 222 55% 55%;
+  --chart-1: 205 65% 68%;
+  --chart-2: 190 55% 55%;
+  --chart-3: 165 55% 45%;
+  --chart-4: 265 55% 65%;
+  --chart-5: 338 65% 65%;
 
-  --chart-1: 222 55% 60%;
-  --chart-2: 210 55% 60%;
-  --chart-3: 180 55% 48%;
-  --chart-4: 265 60% 62%;
-  --chart-5: 338 68% 62%;
-
-  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.5);
-  --shadow-xs:  0px 2px 0px 0px hsl(0 0% 0% / 0.5);
-  --shadow-sm:  0px 2px 0px 0px hsl(0 0% 0% / 0.5), 0px 1px 2px -1px hsl(0 0% 0% / 0.5);
-  --shadow:     0px 2px 0px 0px hsl(0 0% 0% / 0.5), 0px 1px 2px -1px hsl(0 0% 0% / 0.5);
-  --shadow-md:  0px 2px 0px 0px hsl(0 0% 0% / 0.5), 0px 2px 4px -1px hsl(0 0% 0% / 0.5);
-  --shadow-lg:  0px 2px 0px 0px hsl(0 0% 0% / 0.5), 0px 4px 6px -1px hsl(0 0% 0% / 0.5);
-  --shadow-xl:  0px 2px 0px 0px hsl(0 0% 0% / 0.5), 0px 8px 10px -1px hsl(0 0% 0% / 0.5);
-  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 0% / 0.5);
+  --shadow-2xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.6);
+  --shadow-xs:  0px 2px 4px 0px hsl(0 0% 0% / 0.6);
+  --shadow-sm:  0px 2px 4px 0px hsl(0 0% 0% / 0.6), 0px 1px 2px -1px hsl(0 0% 0% / 0.5);
+  --shadow:     0px 2px 4px 0px hsl(0 0% 0% / 0.6), 0px 1px 2px -1px hsl(0 0% 0% / 0.5);
+  --shadow-md:  0px 2px 6px 0px hsl(0 0% 0% / 0.6), 0px 2px 4px -1px hsl(0 0% 0% / 0.5);
+  --shadow-lg:  0px 2px 8px 0px hsl(0 0% 0% / 0.6), 0px 4px 6px -1px hsl(0 0% 0% / 0.5);
+  --shadow-xl:  0px 2px 10px 0px hsl(0 0% 0% / 0.6), 0px 8px 10px -1px hsl(0 0% 0% / 0.5);
+  --shadow-2xl: 0px 4px 16px 0px hsl(0 0% 0% / 0.7);
 }
 
 @layer base {

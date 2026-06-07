@@ -459,7 +459,7 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
         </div>
         <div className="flex items-center gap-1">
           {post.isTrending && (
-            <Badge variant="secondary" className="text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-200">Trending</Badge>
+            <Badge variant="secondary" className="text-[10px] font-bold bg-primary/15 text-primary border border-primary/30">Trending</Badge>
           )}
           {/* Bookmark */}
           <button
@@ -492,10 +492,10 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
           </div>
         )}
         {post.price != null && post.price > 0 && (
-          <div className="flex items-center text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">${post.price}</div>
+          <div className="flex items-center text-[11px] font-bold text-primary bg-primary/15 px-2.5 py-1 rounded-full border border-primary/30">${post.price}</div>
         )}
         {post.price === 0 && (
-          <div className="flex items-center text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">Free</div>
+          <div className="flex items-center text-[11px] font-bold text-primary bg-primary/15 px-2.5 py-1 rounded-full border border-primary/30">Free</div>
         )}
       </div>
 

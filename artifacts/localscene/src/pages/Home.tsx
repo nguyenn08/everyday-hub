@@ -77,7 +77,7 @@ export default function Home() {
       <div className="flex flex-col">
         {activeCategory === "All" && (
           <div className="px-4 py-3 bg-muted/30 border-b border-border/50 flex items-center gap-2">
-            <Flame className="w-4 h-4 text-destructive" />
+            <Flame className="w-4 h-4 text-primary" />
             <span className="text-sm font-bold text-muted-foreground tracking-wide uppercase">Trending Now</span>
           </div>
         )}
