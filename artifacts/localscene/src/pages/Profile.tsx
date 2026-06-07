@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   User, MapPin, Settings, Grid, Bookmark, BarChart,
-  CreditCard, Plus, Trash2, Star as StarIcon, CheckCircle,
+  CreditCard, Plus, Trash2, CheckCircle, LogOut, LogIn,
 } from "lucide-react";
 import {
   useGetProfile, useListPosts, useUpdateProfile, useGetStats,
@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const CARD_BRANDS = ["Visa", "Mastercard", "Amex", "Discover"];
 const CARD_BRAND_COLORS: Record<string, string> = {
@@ -68,22 +69,18 @@ function PaymentMethodsSection() {
   };
 
   const handleDelete = (id: number) => {
-    deleteMethod.mutate(
-      { id },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListPaymentMethodsQueryKey() });
-          toast({ title: "Card removed" });
-        },
-      }
-    );
+    deleteMethod.mutate({ id }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListPaymentMethodsQueryKey() });
+        toast({ title: "Card removed" });
+      },
+    });
   };
 
   const handleSetDefault = (id: number) => {
-    setDefault.mutate(
-      { id },
-      { onSuccess: () => queryClient.invalidateQueries({ queryKey: getListPaymentMethodsQueryKey() }) }
-    );
+    setDefault.mutate({ id }, {
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: getListPaymentMethodsQueryKey() }),
+    });
   };
 
   return (
@@ -101,9 +98,7 @@ function PaymentMethodsSection() {
               </Button>
             </SheetTrigger>
             <SheetContent side="bottom" className="h-auto rounded-t-3xl pb-8">
-              <SheetHeader className="mb-6">
-                <SheetTitle>Add Payment Method</SheetTitle>
-              </SheetHeader>
+              <SheetHeader className="mb-6"><SheetTitle>Add Payment Method</SheetTitle></SheetHeader>
               <form onSubmit={handleAdd} className="flex flex-col gap-4">
                 <div className="space-y-2">
                   <Label>Card Nickname (optional)</Label>
@@ -183,6 +178,46 @@ function PaymentMethodsSection() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function AuthBanner() {
+  const { user, logout, openAuthModal } = useAuth();
+
+  if (!user) {
+    return (
+      <div className="mx-5 mb-4 p-4 bg-muted rounded-2xl flex items-center justify-between gap-3">
+        <div>
+          <p className="font-bold text-sm">Sign in to EverydayHub</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Book, like, and save your favourite local spots</p>
+        </div>
+        <Button size="sm" className="rounded-full font-bold shrink-0 gap-1.5" onClick={openAuthModal}>
+          <LogIn className="w-3.5 h-3.5" /> Sign In
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-5 mb-4 p-4 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-3">
+      <Avatar className="w-10 h-10 shrink-0">
+        <AvatarImage src={user.avatarUrl ?? undefined} />
+        <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">
+          {user.name.slice(0, 2).toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-sm truncate">{user.name}</p>
+        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+      </div>
+      <button
+        onClick={() => { logout(); toast({ title: "Signed out" }); }}
+        className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-full hover:bg-destructive/10"
+        title="Sign out"
+      >
+        <LogOut className="w-4 h-4" />
+      </button>
     </div>
   );
 }
@@ -315,6 +350,9 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Auth Banner */}
+      <AuthBanner />
+
       {/* Tabs */}
       <Tabs defaultValue="posts" className="w-full">
         <TabsList className="w-full rounded-none border-b border-border/50 bg-transparent h-12 p-0 justify-around">
@@ -333,7 +371,6 @@ export default function Profile() {
           ))}
         </TabsList>
 
-        {/* Posts tab */}
         <TabsContent value="posts" className="m-0 border-none outline-none">
           <div className="flex flex-col divide-y divide-border/20">
             {postsLoading ? (
@@ -348,7 +385,6 @@ export default function Profile() {
           </div>
         </TabsContent>
 
-        {/* Saved tab */}
         <TabsContent value="saved" className="m-0 border-none outline-none">
           <div className="flex flex-col divide-y divide-border/20">
             {savedLoading ? (
@@ -365,7 +401,6 @@ export default function Profile() {
           </div>
         </TabsContent>
 
-        {/* Impact tab */}
         <TabsContent value="stats" className="m-0 border-none outline-none">
           <div className="p-5 flex flex-col gap-5">
             <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
