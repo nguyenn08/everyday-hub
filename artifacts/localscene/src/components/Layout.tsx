@@ -1,18 +1,52 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, Calendar, Ticket, User, Plus } from "lucide-react";
+import { Calendar, Ticket, User, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CreatePostSheet } from "./CreatePostSheet";
+
+function EHPinIcon({ className, active }: { className?: string; active?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Pin outline */}
+      <path
+        d="M12 2C7.58 2 4 5.58 4 10c0 6.25 8 16 8 16s8-9.75 8-16c0-4.42-3.58-8-8-8z"
+        stroke="currentColor"
+        strokeWidth={active ? 2 : 1.75}
+        fill={active ? "currentColor" : "none"}
+        fillOpacity={active ? 0.15 : 0}
+      />
+      {/* EH text */}
+      <text
+        x="12"
+        y="11.5"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="6.2"
+        fontWeight="700"
+        fontFamily="Inter, sans-serif"
+        fill="currentColor"
+        letterSpacing="-0.3"
+      >
+        EH
+      </text>
+    </svg>
+  );
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   const navItems = [
-    { href: "/", icon: Home, label: "Discover" },
+    { href: "/", label: "Discover", isPin: true },
     { href: "/calendar", icon: Calendar, label: "Calendar" },
     { href: "/bookings", icon: Ticket, label: "Bookings" },
     { href: "/profile", icon: User, label: "Profile" },
-  ];
+  ] as const;
 
   return (
     <div className="flex flex-col h-[100dvh] bg-background w-full max-w-md mx-auto relative overflow-hidden shadow-2xl">
@@ -33,8 +67,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {navItems.map((item) => {
             const isActive = location === item.href;
             return (
-              <Link 
-                key={item.href} 
+              <Link
+                key={item.href}
                 href={item.href}
                 className={cn(
                   "flex flex-col items-center justify-center w-full h-full gap-1 transition-all duration-300",
@@ -45,11 +79,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   "flex items-center justify-center p-1.5 rounded-full transition-all duration-300",
                   isActive && "bg-primary/10"
                 )}>
-                  <item.icon className={cn("w-5 h-5 transition-transform", isActive && "fill-primary/20 scale-110")} strokeWidth={isActive ? 2.5 : 2} />
+                  {"isPin" in item ? (
+                    <EHPinIcon
+                      className={cn("w-5 h-[23px] transition-transform", isActive && "scale-110")}
+                      active={isActive}
+                    />
+                  ) : (
+                    <item.icon
+                      className={cn("w-5 h-5 transition-transform", isActive && "fill-primary/20 scale-110")}
+                      strokeWidth={isActive ? 2.5 : 2}
+                    />
+                  )}
                 </div>
-                <span className="text-[10px] font-medium tracking-tight">
-                  {item.label}
-                </span>
+                <span className="text-[10px] font-medium tracking-tight">{item.label}</span>
               </Link>
             );
           })}

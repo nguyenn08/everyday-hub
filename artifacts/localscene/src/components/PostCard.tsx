@@ -502,7 +502,7 @@ export function PostCard({ post, variant = "feed" }: PostCardProps) {
       <div className="flex items-center justify-between pt-1">
         <div className="flex items-center gap-3">
           <button onClick={handleLike} className="flex items-center gap-1.5 group">
-            <div className={cn("p-1.5 rounded-full transition-all duration-150", localLiked ? "bg-red-50" : "group-hover:bg-muted")}>
+            <div className={cn("p-1.5 rounded-full transition-all duration-150", !localLiked && "group-hover:bg-muted/20")}>
               <Heart className={cn("w-5 h-5 transition-all duration-150", localLiked ? "fill-red-500 text-red-500 scale-110" : "text-muted-foreground group-hover:text-foreground")} />
             </div>
             <span className={cn("text-sm font-bold transition-colors", localLiked ? "text-red-500" : "text-muted-foreground")}>{localLikes}</span>
