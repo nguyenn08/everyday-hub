@@ -9,9 +9,11 @@ import commentsRouter from "./comments";
 import savedPlacesRouter from "./saved-places";
 import reviewsRouter from "./reviews";
 import paymentMethodsRouter from "./payment-methods";
+import authRouter from "./auth";
 
 const router: IRouter = Router();
 
+router.use(authRouter);
 router.use(healthRouter);
 router.use(postsRouter);
 router.use(commentsRouter);
